@@ -15,4 +15,3 @@ Run Waydroid (Android container) on WSL2. This project provides tools and config
    cd Waydroid-On-WSL2
     chmod +x make-kernel.sh
    bash make-kernel.sh
-   
