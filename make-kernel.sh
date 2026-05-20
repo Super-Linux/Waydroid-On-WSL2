@@ -1,10 +1,17 @@
-echo welecome!
+echo "Welcome!"
+
+# Clone the WSL2 kernel repo
 git clone --depth=1 https://github.com/microsoft/WSL2-Linux-Kernel.git
-echo installing 
+cd WSL2-Linux-Kernel
 
+echo "Installing build dependencies..."
+sudo apt-get update
+sudo apt-get install -y build-essential ncurses-dev bison flex libssl-dev libelf-dev
+
+# Copy default WSL config
 cp Microsoft/config-wsl .config
-sudo apt-get install build-essential ncurses-dev bison flex libssl-dev libelf-dev
 
+# Apply your custom kernel options
 ./scripts/config --file .config \
   --enable CONFIG_ANDROID \
   --enable CONFIG_ANDROID_BINDER_IPC \
@@ -67,17 +74,25 @@ sudo apt-get install build-essential ncurses-dev bison flex libssl-dev libelf-de
   \
   --enable CONFIG_QUOTA \
   --enable CONFIG_EXT4_FS_POSIX_ACL \
---enable CONFIG_EXT4_FS_SECURITY
-clear 
+  --enable CONFIG_EXT4_FS_SECURITY
 
-make -j2 bzImage
-echo All Done!
+# Generate defaults for missing options
+make olddefconfig
+
+clear
+echo "Building kernel..."
+make -j$(nproc) bzImage
+
+echo "Build complete!"
+
+# Copy kernel to Windows
 mkdir -p /mnt/c/wsl-kernel
 cp arch/x86/boot/bzImage /mnt/c/wsl-kernel/
-echo your kernel is at C:/wsl-kernel
 
-your kernel is now loacted at C:/wsl-kernel
-echo type  these commads after you change your kernel only if you cant find binders
-sudo mkdir -p /dev/binderfs
-sudo mount -t binder binder /dev/binderfs
+echo "Your kernel is located at: C:/wsl-kernel/bzImage"
+
+echo "If binderfs is missing, run:"
+echo "sudo mkdir -p /dev/binderfs"
+echo "sudo mount -t binder binder /dev/binderfs"
+
 
