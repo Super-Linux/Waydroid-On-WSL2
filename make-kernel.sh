@@ -7,7 +7,8 @@ cd WSL2-Linux-Kernel
 echo "Installing build dependencies..."
 sudo apt-get update
 sudo apt-get install -y build-essential ncurses-dev bison flex libssl-dev libelf-dev
-
+# entering the folder
+cd WSL2-Linux-Kernel
 # Copy default WSL config
 cp Microsoft/config-wsl .config
 
@@ -81,8 +82,8 @@ make olddefconfig
 
 clear
 echo "Building kernel..."
-make -j$(nproc) bzImage
-
+# build the kernel
+make -j2 bzImage
 echo "Build complete!"
 
 # Copy kernel to Windows
@@ -94,5 +95,6 @@ echo "Your kernel is located at: C:/wsl-kernel/bzImage"
 echo "If binderfs is missing, run:"
 echo "sudo mkdir -p /dev/binderfs"
 echo "sudo mount -t binder binder /dev/binderfs"
+echo thank you for much for choosing Super-Linux/Waydroid-On-WSL2!
 
 
