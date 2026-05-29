@@ -19,8 +19,6 @@ cp Microsoft/config-wsl .config
   --enable CONFIG_ANDROID_BINDERFS \
   --set-str CONFIG_ANDROID_BINDER_DEVICES "binder,hwbinder,vndbinder" \
   \
-  --enable CONFIG_ASHMEM \
-  \
   --enable CONFIG_STAGING \
   --enable CONFIG_PSI \
   \
@@ -45,6 +43,7 @@ cp Microsoft/config-wsl .config
   --enable CONFIG_SQUASHFS_ZSTD \
   --enable CONFIG_SQUASHFS_LZ4 \
   \
+  --enable CONFIG_NET \
   --enable CONFIG_NETFILTER \
   --enable CONFIG_NF_NAT \
   --enable CONFIG_IP_NF_IPTABLES \
@@ -53,13 +52,6 @@ cp Microsoft/config-wsl .config
   --enable CONFIG_IP_NF_TARGET_MASQUERADE \
   --enable CONFIG_BRIDGE \
   --enable CONFIG_VETH \
-  \
-  --enable CONFIG_WIRELESS \
-  --enable CONFIG_WLAN \
-  --enable CONFIG_FW_LOADER \
-  --enable CONFIG_CFG80211 \
-  --enable CONFIG_MAC80211 \
-  \
   --enable CONFIG_TUN \
   --enable CONFIG_MACVLAN \
   --enable CONFIG_IPVLAN \
@@ -75,7 +67,30 @@ cp Microsoft/config-wsl .config
   \
   --enable CONFIG_QUOTA \
   --enable CONFIG_EXT4_FS_POSIX_ACL \
-  --enable CONFIG_EXT4_FS_SECURITY
+  --enable CONFIG_EXT4_FS_SECURITY \
+  \
+  --enable CONFIG_HYPERV \
+  --enable CONFIG_HYPERV_UTILS \
+  --enable CONFIG_HYPERV_BALLOON \
+  --enable CONFIG_HYPERV_STORAGE \
+  --enable CONFIG_HYPERV_NET \
+  \
+  --disable CONFIG_INFINIBAND \
+  --disable CONFIG_CHELSIO_T3 \
+  --disable CONFIG_CHELSIO_T4 \
+  --disable CONFIG_MEGARAID_NEWGEN \
+  --disable CONFIG_MEGARAID_SAS \
+  \
+  --disable CONFIG_DRM_AMDGPU \
+  --disable CONFIG_DRM_NOUVEAU \
+  --disable CONFIG_DRM_RADEON \
+  \
+  --disable CONFIG_SOUND \
+  --disable CONFIG_SND \
+  --disable CONFIG_MEDIA_SUPPORT \
+  --disable CONFIG_RC_CORE \
+  --disable CONFIG_FIREWIRE \
+  --disable CONFIG_THUNDERBOLT
 
 # Generate defaults for missing options
 make olddefconfig
