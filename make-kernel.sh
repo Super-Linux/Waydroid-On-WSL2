@@ -1,18 +1,21 @@
+#!/bin/bash
+set -e # Stops the script immediately if any command fails
+
 echo "Welcome!"
 
-# Clone the WSL2 kernel repo
-git clone --depth=1 https://github.com/microsoft/WSL2-Linux-Kernel.git
+# 1. Clone the WSL2 kernel repo
+git clone --depth=1 https://github.com/ WSL2-Linux-Kernel
 cd WSL2-Linux-Kernel
 
+# 2. Installing build dependencies
 echo "Installing build dependencies..."
 sudo apt-get update
 sudo apt-get install -y build-essential ncurses-dev bison flex libssl-dev libelf-dev
-# entering the folder
-cd WSL2-Linux-Kernel
-# Copy default WSL config
+
+# 3. Copy default WSL config
 cp Microsoft/config-wsl .config
 
-# Apply your custom kernel options
+# 4. Apply custom kernel options for Waydroid / Android Binder
 ./scripts/config --file .config \
   --enable CONFIG_ANDROID \
   --enable CONFIG_ANDROID_BINDER_IPC \
@@ -92,24 +95,45 @@ cp Microsoft/config-wsl .config
   --disable CONFIG_FIREWIRE \
   --disable CONFIG_THUNDERBOLT
 
-# Generate defaults for missing options
+# 5. Generate defaults for missing options
 make olddefconfig
 
 clear
+# [NEW] Core selection logic
+echo "--------------------------------------------------"
+echo "How many CPU cores would you like to use to build?"
+echo "1) Use 1 core (Slower, keeps system responsive)"
+echo "4) Use 4 cores (Faster compilation)"
+echo "--------------------------------------------------"
+read -p "Enter your choice [1 or 4]: " CORE_CHOICE
+
+if [ "$CORE_CHOICE" = "4" ]; then
+    CORES=4
+    echo "Configured to use 4 cores."
+else
+    CORES=1
+    echo "Configured to use 1 core (Default)."
+fi
+
 echo "Building kernel..."
-# build the kernel
-make -j2 bzImage
+# Build the kernel using the selected choice
+make -j$CORES vmlinux
 echo "Build complete!"
 
-# Copy kernel to Windows
+# 6. Copy kernel to Windows C: Drive
 mkdir -p /mnt/c/wsl-kernel
-cp arch/x86/boot/bzImage /mnt/c/wsl-kernel/
+cp vmlinux /mnt/c/wsl-kernel/wsl-kernel
 
-echo "Your kernel is located at: C:/wsl-kernel/bzImage"
-
-echo "If binderfs is missing, run:"
+echo "Your kernel is located at: C:\wsl-kernel\wsl-kernel"
+echo ""
+echo "Next Steps:"
+echo "1. Create or edit your 'C:\Users\<YourUsername>\.wslconfig' file."
+echo "2. Add these lines to it:"
+echo "   [wsl2]"
+echo "   kernel=C:\\\\wsl-kernel\\\\wsl-kernel"
+echo "3. Run 'wsl --shutdown' in Windows PowerShell to apply."
+echo ""
+echo "If binderfs is missing after reboot, run:"
 echo "sudo mkdir -p /dev/binderfs"
 echo "sudo mount -t binder binder /dev/binderfs"
-echo thank you for much for choosing Super-Linux/Waydroid-On-WSL2!
-
-
+echo "Thank you for choosing Super-Linux/Waydroid-On-WSL2!"
