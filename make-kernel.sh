@@ -4,7 +4,7 @@ set -e # Stops the script immediately if any command fails
 echo "Welcome!"
 
 # 1. Clone the WSL2 kernel repo
-git clone --depth=1 https://github.com/ WSL2-Linux-Kernel
+git clone --depth=1 https://github.com/microsoft/wsl2-linux-kernel
 cd WSL2-Linux-Kernel
 
 # 2. Installing build dependencies
