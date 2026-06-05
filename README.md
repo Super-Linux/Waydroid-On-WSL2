@@ -1,88 +1,139 @@
-# Waydroid on WSL2: Custom Kernel Compiler
 
-[![GitHub license](https://shields.io)](https://github.com)
-[![GitHub stars](https://shields.io)](https://github.com)
-[![GitHub forks](https://shields.io)](https://github.com)
-[![Platform](https://shields.io)](https://microsoft.com)
+# Waydroid on WSL2: Custom Kernel Builder
 
-An automated shell compilation utility to configure and build a custom **WSL2 Linux Kernel** optimized explicitly for **Waydroid (Android Container)** execution. This automation injects missing modules like Android Binder and Ashmem directly into your WSL framework.
+An automated build utility for compiling a custom **WSL2 Linux kernel** with the Android-specific features required by **Waydroid**. The script enables and configures kernel options such as Android Binder IPC and BinderFS, producing a kernel image that can be used with WSL2.
 
 > [!IMPORTANT]
-> **Kernel Interception:** This script requires a Linux terminal running inside WSL2 (such as Ubuntu or Debian) to compile the necessary kernel binaries.
+> This project must be run from a Linux distribution inside **WSL2** (for example, Ubuntu or Debian). Building the kernel requires standard Linux development tools and may take some time depending on your system.
 
 ---
 
-## 🚀 Key Features
+## Features
 
-* **One-Command Compilation:** Automates the complete kernel setup layer via a single shell script wrapper (`make-kernel.sh`).
-* **Android Binder Provisioning:** Configures `CONFIG_ANDROID_BINDER_IPC` and memory hooks required to boot an internal Android OS.
-* **Streamlined Deployment:** Safely exports a compiled kernel ready to be loaded by Windows.
+* **Automated Kernel Build** – Compiles a WSL2-compatible kernel using a single script (`make-kernel.sh`).
+* **Configurable Build Performance** – Allows selection of the number of CPU cores used during compilation.
+* **Waydroid Support** – Enables Android Binder IPC, BinderFS, and other required kernel options.
+* **Ready for WSL2 Deployment** – Produces an uncompressed `vmlinux` image suitable for use as a custom WSL2 kernel.
 
 ---
 
-## 📋 Prerequisites
+## Prerequisites
 
-Before running the compiler tool, ensure your base Linux distribution has the essential build dependencies:
+Install the required build dependencies before running the script.
 
-### For Ubuntu / Debian Systems:
+### Ubuntu / Debian
+
 ```bash
-sudo apt update && sudo apt install -y build-essential libncurses-dev bison flex libssl-dev libelf-dev bc git
+sudo apt update
+sudo apt install -y \
+    build-essential \
+    libncurses-dev \
+    bison \
+    flex \
+    libssl-dev \
+    libelf-dev \
+    bc \
+    git
 ```
 
 ---
 
-## 🛠️ Installation & Execution
+## Installation and Usage
 
-Follow these rapid steps inside your active WSL2 terminal session to build and extract your specialized kernel modules:
+### Clone the Repository
 
-### 1️⃣ Run the Automated Compiler
 ```bash
-# Clone the repository
-git clone https://github.com
+git clone https://github.com/Super-Linux/Waydroid-On-WSL2
 cd Waydroid-On-WSL2
+```
 
-# Grant execution rights and run the builder script
+### Run the Builder
+
+```bash
 chmod +x make-kernel.sh
 ./make-kernel.sh
 ```
 
-### 2️⃣ Register the Kernel in Windows
-After compiling, copy your output kernel image (typically `vmlinux` or `bzImage`) to a static location on your Windows computer host (for example: `C:\WaydroidKernel\`).
+The script downloads the required kernel sources, applies the necessary configuration changes, and builds the kernel.
 
-Create or append the target file path mapping inside your Windows host system directory profile `C:\Users\<YourUsername>\.wslconfig`:
+---
+
+## Configure WSL2
+
+After compilation, copy the generated `vmlinux` file to a location accessible from Windows, for example:
+
+```text
+C:\wsl-kernel\vmlinux
+```
+
+Create or edit the file:
+
+```text
+C:\Users\<YourUsername>\.wslconfig
+```
+
+Add the following configuration:
 
 ```ini
 [wsl2]
-kernel=C:\\WaydroidKernel\\vmlinux
+kernel=C:\\wsl-kernel\\vmlinux
 ```
 
-### 3️⃣ Cold Reboot the Subsystem
-Save your modified configuration. Shut down the virtualization hypervisor completely from a Windows Command Prompt terminal to trigger a system swap:
-```cmd
+Apply the changes by shutting down WSL:
+
+```powershell
 wsl --shutdown
 ```
 
+Then start your WSL distribution again.
+
 ---
 
-## 🗂️ Project Repository Map
+## Project Structure
 
 ```text
-├── make-kernel.sh   # Core automation logic: downloads kernel sources and patches configuration configs
-└── README.md        # Technical project documentation storefront
+.
+├── make-kernel.sh   # Downloads, configures, and builds the kernel
+└── README.md
 ```
 
 ---
 
-## 🤝 Contributing
+## Credits
 
-Contributions to make the compilation matrix more robust are highly appreciated! 
+* Inspired by SouNux and other community efforts to run Waydroid on WSL2.
+* Kernel sources are based on the official Microsoft WSL2 Linux kernel.
 
-1. **Fork** the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingUpgrade`)
-3. **Commit** your Changes (`git commit -m 'Add some AmazingUpgrade'`)
-4. **Push** to the Branch (`git push origin feature/AmazingUpgrade`)
-5. Open a **Pull Request**
+---
 
-## 📝 License
+## Contributing
 
-Distributed under the MIT License. See `LICENSE` for more details.
+Contributions are welcome.
+
+1. Fork the repository
+
+2. Create a feature branch
+
+   ```bash
+   git checkout -b feature/my-feature
+   ```
+
+3. Commit your changes
+
+   ```bash
+   git commit -m "Add new feature"
+   ```
+
+4. Push to your branch
+
+   ```bash
+   git push origin feature/my-feature
+   ```
+
+5. Open a Pull Request
+
+---
+
+## License
+
+This project is licensed under the MIT License. See the `LICENSE` file for details.
