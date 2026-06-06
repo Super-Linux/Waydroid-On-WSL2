@@ -2,6 +2,7 @@
 set -e # Stops the script immediately if any command fails
 
 echo "Welcome!"
+echo ""
 
 # 1. Clone the WSL2 kernel repo
 git clone --depth=1 https://github.com/microsoft/WSL2-linux-kernel.git
@@ -124,10 +125,10 @@ echo "Build complete!"
 mkdir -p /mnt/c/wsl-kernel
 cp vmlinux /mnt/c/wsl-kernel/wsl-kernel
 
-echo "Your kernel is located at: C:\wsl-kernel\wsl-kernel"
+echo "Your kernel is located at: C:\\wsl-kernel\\wsl-kernel"
 echo ""
 echo "Next Steps:"
-echo "1. Create or edit your 'C:\Users\<YourUsername>\.wslconfig' file."
+echo "1. Create or edit your 'C:\\Users\\<YourUsername>\\.wslconfig' file."
 echo "2. Add these lines to it:"
 echo "   [wsl2]"
 echo "   kernel=C:\\\\wsl-kernel\\\\wsl-kernel"
