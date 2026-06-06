@@ -5,7 +5,7 @@ echo "Welcome!"
 
 # 1. Clone the WSL2 kernel repo
 git clone --depth=1 https://github.com/microsoft/WSL2-linux-kernel.git
-cd WSL2-Linux-Kernel
+cd WSL2-linux-kernel
 
 # 2. Installing build dependencies
 echo "Installing build dependencies..."
