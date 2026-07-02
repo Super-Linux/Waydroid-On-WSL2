@@ -9,7 +9,7 @@ echo ""
 # 1. Clone the WSL2 kernel repo
 if [ ! -d "WSL2-Linux-Kernel" ]; then
     echo "Cloning WSL2 kernel repository..."
-    git clone --depth=1 https://github.com
+    git clone https://github.com/microsoft/WSL2-Linux-Kernel.git
 fi
 cd WSL2-Linux-Kernel
 
