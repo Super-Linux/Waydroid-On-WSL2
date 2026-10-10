@@ -136,4 +136,14 @@ Contributions are welcome.
 
 ## License
 
-This project is licensed under the MIT License. See the `LICENSE` file for details.
+## Project Copyright and License
+
+Copyright (c) 2026 Super-Linux
+
+This project is licensed under the GNU General Public
+License v3.0. See the `LICENSE` file for details.
+
+Original project by Super-Linux.
+
+Please preserve applicable copyright notices and identify
+significant modifications when redistributing this project.
